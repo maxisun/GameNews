@@ -1,5 +1,6 @@
 package com.example.max00.gamenews.Activities;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.max00.gamenews.Fragments.NewsFragment;
 import com.example.max00.gamenews.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,27 @@ public class MainActivity extends AppCompatActivity {
         mactionBarDrawerToggle.syncState();
         //Set whether home should be displayed as an "up" affordance.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                boolean fragtransac = false;
+                android.support.v4.app.Fragment fragment = null;
+
+                switch (item.getItemId()){
+                    case R.id.news_drawermenu_ID:
+                        fragment = NewsFragment.newInstance();
+                        fragtransac = true;
+                        break;
+                }
+                if(fragtransac){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_main,fragment).commit();
+                    item.setChecked(true);
+                    getSupportActionBar().setTitle(item.getTitle());
+                    mdrawerLayout.closeDrawers();
+                }
+                return true;
+            }
+        });
 
 
     }
