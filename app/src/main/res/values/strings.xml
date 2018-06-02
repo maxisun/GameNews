@@ -9,10 +9,15 @@
     <string name="kaunter">CSGO</string>
     <string name="settings">Settings</string>
     <string name="favoritos">Favourites</string>
+    <string name="otros">More Options</string>
 
     <!-- drawer_header strings -->
     <string name="maxisun">Max Espinal</string>
     <string name="occupation">Ing. Informatica</string>
+
+    <!-- drawer toggle strings -->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
