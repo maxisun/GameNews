@@ -79,12 +79,12 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.news_fragment, container, false);
         recyclerView = v.findViewById(R.id.recycleview_newsfragment);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        /*LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         RecyclerView.LayoutManager layoutManager = linearLayoutManager;
         recyclerView.setLayoutManager(layoutManager);
         adapter = new NewsAdapter(mParam1,getContext());
-        recyclerView.setAdapter(adapter);
-        /*GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
+        recyclerView.setAdapter(adapter);*/
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -97,7 +97,7 @@ public class NewsFragment extends Fragment {
         });
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new NewsAdapter(mParam1,getActivity());
-        recyclerView.setAdapter(adapter);*/
+        recyclerView.setAdapter(adapter);
         return v;
     }
 

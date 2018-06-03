@@ -1,6 +1,8 @@
 package com.example.max00.gamenews.Classes;
 
-public class News {
+import java.io.Serializable;
+
+public class News implements Serializable{
     private int image;
     private String titulo;
     private String subtitulo;
