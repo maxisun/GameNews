@@ -1,5 +1,6 @@
 package com.example.max00.gamenews.Adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder>{
     public List<News> list;
+    private Context context;
+    private LayoutInflater layoutInflater;
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
@@ -26,7 +29,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         public NewsViewHolder(View view){
             super(view);
-            cardView = view.findViewById(R.id.card_view);
+            cardView = view.findViewById(R.id.card_view_news);
             titulo = view.findViewById(R.id.titulo_cardview_TV);
             subtitulo = view.findViewById(R.id.subtitulo_cardview_TV);
             imagen = view.findViewById(R.id.imagen_cardview_news);
@@ -34,15 +37,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
     }
 
-    public NewsAdapter(List<News> news){
+    public NewsAdapter(List<News> news, Context context){
         this.list=news;
+        this.context=context;
     }
 
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_news_view,parent,false);
-        return (new NewsViewHolder(v));
+        layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.card_news_view,parent,false);
+        NewsViewHolder newsViewHolder = new NewsViewHolder(view);
+        return newsViewHolder;
     }
 
     @Override
@@ -51,7 +57,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         holder.imagen.setImageResource(news.getImage());
         holder.titulo.setText(news.getTitulo());
-        holder.subtitulo.setText(news.getSubtitulo());
+        //holder.subtitulo.setText(news.getSubtitulo());
+        holder.checkBox.setChecked(false);
     }
 
     @Override

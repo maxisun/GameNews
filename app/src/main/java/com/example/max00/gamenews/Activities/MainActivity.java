@@ -8,20 +8,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.Fragments.NewsFragment;
 import com.example.max00.gamenews.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mdrawerLayout;
     private ActionBarDrawerToggle mactionBarDrawerToggle;
     private NavigationView navigationView;
+    private ArrayList<News> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //inicializando atributos
         initialize();
+        FillLolis();
         mactionBarDrawerToggle = new ActionBarDrawerToggle(this,mdrawerLayout,R.string.open,R.string.close);
         mdrawerLayout.addDrawerListener(mactionBarDrawerToggle);
         //Synchronize the state of the drawer indicator/affordance with the linked DrawerLayout.
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.news_drawermenu_ID:
-                        fragment = NewsFragment.newInstance();
+                        fragment = NewsFragment.newInstance(list);
                         fragtransac = true;
                         break;
                 }
@@ -64,5 +69,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void FillLolis(){
+        list = new ArrayList<>();
+        list.add(new News(R.drawable.chino,"la","la2"));
+        list.add(new News(R.drawable.chino,"la","la2"));
+        list.add(new News(R.drawable.chino,"la","la2"));
+        list.add(new News(R.drawable.chino,"la","la2"));
     }
 }
