@@ -23,6 +23,9 @@ public class Users {
     private String password;
     private String Token;
 
+    public Users() {
+    }
+
     public Users(String user, String password) {
         this.user = user;
         this.password = password;

@@ -1,5 +1,6 @@
 package com.example.max00.gamenews.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,9 +37,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
-                /*Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-                finish();*/
             }
         });
     }
@@ -54,13 +52,15 @@ public class LoginActivity extends AppCompatActivity {
         Retrofit.Builder builder = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(gson));
         Retrofit retrofit = builder.build();
         GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
-        Users users = new Users(username.getText().toString(),password.getText().toString());
+        final Users users = new Users(username.getText().toString(),password.getText().toString());
         Call<String> call = gameNewsAPI.login(users.getUser(),users.getPassword());
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful() && !response.body().equals("")) {
+                if (response.isSuccessful() && !response.body().equals("") && !username.getText().equals("") && !password.getText().equals("")) {
+                    users.setToken(response.body());
                     Toast.makeText(LoginActivity.this,response.body().toString(), Toast.LENGTH_SHORT).show();
+                    startativity();
                 } else {
                     Toast.makeText(LoginActivity.this, "no response", Toast.LENGTH_SHORT).show();
                 }
@@ -74,4 +74,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void startativity(){
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

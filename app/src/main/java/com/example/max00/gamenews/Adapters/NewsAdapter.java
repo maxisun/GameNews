@@ -55,9 +55,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void onBindViewHolder(@NonNull NewsViewHolder holder,final int position) {
         final News news = list.get(position);
 
-        holder.imagen.setImageResource(news.getImage());
+        holder.imagen.setImageResource(R.drawable.chino);
         holder.titulo.setText(news.getTitulo());
-        //holder.subtitulo.setText(news.getSubtitulo());
+        holder.subtitulo.setText(news.getSubtitulo());
         holder.checkBox.setChecked(false);
     }
 

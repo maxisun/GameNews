@@ -7,19 +7,32 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.max00.gamenews.API.GameNewsAPI;
+import com.example.max00.gamenews.API.NewsDeserializer;
 import com.example.max00.gamenews.Classes.News;
+import com.example.max00.gamenews.Classes.Users;
 import com.example.max00.gamenews.Fragments.NewsFragment;
 import com.example.max00.gamenews.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
     private DrawerLayout mdrawerLayout;
     private ActionBarDrawerToggle mactionBarDrawerToggle;
     private NavigationView navigationView;
     private ArrayList<News> list;
+    private ArrayList<News> list2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         //inicializando atributos
         initialize();
         FillLolis();
+        newslist();
         mactionBarDrawerToggle = new ActionBarDrawerToggle(this,mdrawerLayout,R.string.open,R.string.close);
         mdrawerLayout.addDrawerListener(mactionBarDrawerToggle);
         //Synchronize the state of the drawer indicator/affordance with the linked DrawerLayout.
@@ -41,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.news_drawermenu_ID:
-                        fragment = NewsFragment.newInstance(list);
+                        fragment = NewsFragment.newInstance(list2);
                         fragtransac = true;
                         break;
                 }
@@ -77,5 +91,31 @@ public class MainActivity extends AppCompatActivity {
         list.add(new News(R.drawable.chino,"la","la2"));
         list.add(new News(R.drawable.chino,"la","la2"));
         list.add(new News(R.drawable.chino,"la","la2"));
+    }
+
+    private void newslist(){
+        Users users = new Users();
+        final String token = users.getToken();
+        Gson gson = new GsonBuilder().registerTypeAdapter(News.class, new NewsDeserializer()).create();
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(gson));
+        Retrofit retrofit = builder.build();
+        GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
+        Call<List<News>> news = gameNewsAPI.getNews("Beared " + token);
+        news.enqueue(new Callback<List<News>>() {
+            @Override
+            public void onResponse(Call<List<News>> call, Response<List<News>> response) {
+                if(response.isSuccessful()){
+                    list2 = (ArrayList<News>) response.body();
+                }else {
+                    Toast.makeText(getApplicationContext(),"No se pudo cargar las noticias",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<News>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"cagado",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
