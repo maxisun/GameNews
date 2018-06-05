@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<News>> call, Response<List<News>> response) {
                 if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Cargando...",Toast.LENGTH_SHORT).show();
                     list2 = (ArrayList<News>) response.body();
                 }else {
                     Toast.makeText(getApplicationContext(),"No se pudo cargar las noticias",Toast.LENGTH_LONG).show();

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -55,9 +56,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void onBindViewHolder(@NonNull NewsViewHolder holder,final int position) {
         final News news = list.get(position);
 
-        holder.imagen.setImageResource(R.drawable.chino);
-        holder.titulo.setText(news.getTitulo());
-        holder.subtitulo.setText(news.getSubtitulo());
+        //holder.imagen.setImageResource(R.drawable.chino);
+        //holder.titulo.setText(news.getTitulo());
+        //holder.subtitulo.setText(news.getSubtitulo());
+
+        if (!(news.getCoverImage() == null) &&
+                news.getCoverImage().length() > 20) {
+            Picasso.with(context).load(news.getCoverImage()).error(R.drawable.chino).into(holder.imagen);
+        } else {
+            Picasso.with(context).load(R.drawable.chino).error(R.drawable.chino).into(holder.imagen);
+        }
         holder.checkBox.setChecked(false);
     }
 
