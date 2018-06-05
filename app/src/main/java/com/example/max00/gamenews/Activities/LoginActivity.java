@@ -1,6 +1,8 @@
 package com.example.max00.gamenews.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -58,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && !response.body().equals("") && !username.getText().equals("") && !password.getText().equals("")) {
-                    users.setToken(response.body());
-                    Toast.makeText(LoginActivity.this,response.body().toString(), Toast.LENGTH_SHORT).show();
+                    sharedpreferences(response.body());
+                    Toast.makeText(LoginActivity.this,response.body(), Toast.LENGTH_SHORT).show();
                     startativity();
                 } else {
                     Toast.makeText(LoginActivity.this, "no response", Toast.LENGTH_SHORT).show();
@@ -78,5 +80,13 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void sharedpreferences(String token){
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Login_Token", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Token",token);
+        //asyncrono, en backgorund
+        editor.apply();
     }
 }

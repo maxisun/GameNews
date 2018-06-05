@@ -1,5 +1,7 @@
 package com.example.max00.gamenews.Activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -33,13 +35,17 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ArrayList<News> list;
     private ArrayList<News> list2;
+    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //shared preference
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Login_Token", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("Token","");
         //inicializando atributos
         initialize();
-        FillLolis();
+        //FillLolis();
         newslist();
         mactionBarDrawerToggle = new ActionBarDrawerToggle(this,mdrawerLayout,R.string.open,R.string.close);
         mdrawerLayout.addDrawerListener(mactionBarDrawerToggle);
@@ -94,11 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void newslist(){
-        Users users = new Users();
-        final String token = users.getToken();
-        Gson gson = new GsonBuilder().registerTypeAdapter(News.class, new NewsDeserializer()).create();
-        Retrofit.Builder builder = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(gson));
-        Retrofit retrofit = builder.build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(new Gson())).build();
         GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
         Call<List<News>> news = gameNewsAPI.getNews("Beared " + token);
         news.enqueue(new Callback<List<News>>() {
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<News>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"cagado",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
             }
         });
     }
