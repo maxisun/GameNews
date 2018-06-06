@@ -17,12 +17,12 @@ public class NewsDeserializer implements JsonDeserializer<News> {
         news = new News();
         JsonObject jsonObject = json.getAsJsonObject();
         news.setId(jsonObject.get("_id").getAsString());
-        news.setTitulo(jsonObject.get("title").getAsString());
-        news.setSubtitulo(jsonObject.get("body").getAsString());
-        news.setGame(jsonObject.get("game").getAsString());
-        news.setCreated_date(jsonObject.get("created_date").getAsString());
+        news.setTitle(jsonObject.get("title").getAsString());
         news.setCoverImage(jsonObject.get("coverImage").getAsString());
+        news.setCreate_date(jsonObject.get("created_date").getAsString());
         news.setDescription(jsonObject.get("description").getAsString());
+        news.setBody(jsonObject.get("body").getAsString());
+        news.setGame(jsonObject.get("game").getAsString());
         return news;
     }
 }

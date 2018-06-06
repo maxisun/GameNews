@@ -3,6 +3,7 @@ package com.example.max00.gamenews.API;
 import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.Classes.Users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;

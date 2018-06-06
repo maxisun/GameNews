@@ -8,46 +8,15 @@ import java.util.Date;
 public class News implements Serializable,Comparable<News>{
 
     private String id;
-    private int image;
-    private String titulo;
-    private String subtitulo;
-    private String game;
-    private String created_date;
+    private String title;
     private String coverImage;
-    private Date createdDate;
+    private String create_date;
     private String description;
+    private String body;
+    private String game;
+    private Date createdDate;
 
     public News() {
-    }
-
-    public News(int image, String titulo, String subtitulo) {
-        this.image = image;
-        this.titulo = titulo;
-        this.subtitulo = subtitulo;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getSubtitulo() {
-        return subtitulo;
-    }
-
-    public void setSubtitulo(String subtitulo) {
-        this.subtitulo = subtitulo;
     }
 
     public String getId() {
@@ -58,20 +27,12 @@ public class News implements Serializable,Comparable<News>{
         this.id = id;
     }
 
-    public String getGame() {
-        return game;
+    public String getTitle() {
+        return title;
     }
 
-    public void setGame(String game) {
-        this.game = game;
-    }
-
-    public String getCreated_date() {
-        return created_date;
-    }
-
-    public void setCreated_date(String created_date) {
-        this.created_date = created_date;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCoverImage() {
@@ -82,12 +43,12 @@ public class News implements Serializable,Comparable<News>{
         this.coverImage = coverImage;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public String getCreate_date() {
+        return create_date;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setCreate_date(String create_date) {
+        this.create_date = create_date;
     }
 
     public String getDescription() {
@@ -96,6 +57,30 @@ public class News implements Serializable,Comparable<News>{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override

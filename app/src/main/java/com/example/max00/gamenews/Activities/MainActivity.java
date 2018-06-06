@@ -1,6 +1,7 @@
 package com.example.max00.gamenews.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -39,10 +40,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         //shared preference
-        SharedPreferences sharedPreferences = this.getSharedPreferences("Login_Token", Context.MODE_PRIVATE);
-        token = sharedPreferences.getString("Token","");
+        sharedpreferences();
+        setContentView(R.layout.activity_main);
         //inicializando atributos
         initialize();
         //FillLolis();
@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
     private void initialize(){
         mdrawerLayout = findViewById(R.id.drawer_layout);
@@ -91,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void FillLolis(){
+    /*private void FillLolis(){
         list = new ArrayList<>();
         list.add(new News(R.drawable.chino,"la","la2"));
         list.add(new News(R.drawable.chino,"la","la2"));
         list.add(new News(R.drawable.chino,"la","la2"));
         list.add(new News(R.drawable.chino,"la","la2"));
-    }
+    }*/
 
     private void newslist(){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(new Gson())).build();
@@ -121,5 +119,22 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
             }
         });
+    }
+    /*private void setFragmentByDefault(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, NewsFragment.newInstance(list2)).commit();
+        MenuItem item = navigationView.getMenu().getItem(0);
+        item.setChecked(true);
+        getSupportActionBar().setTitle(item.getTitle());
+    }*/
+
+    private void sharedpreferences(){
+        SharedPreferences sharedPreferences = this.getSharedPreferences("Login_Token", Context.MODE_PRIVATE);
+        if(!sharedPreferences.contains("Token")){
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            token = sharedPreferences.getString("Token","");
+        }
     }
 }
