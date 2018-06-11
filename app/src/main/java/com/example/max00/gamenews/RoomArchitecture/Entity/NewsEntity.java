@@ -5,13 +5,15 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
+
 @Entity(tableName = "News_table")
-public class NewsEntity {
+public class NewsEntity implements Serializable{
 
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "id")
-    private String id;
+    private String _id;
 
     @ColumnInfo(name = "title")
     private String title;
@@ -20,7 +22,7 @@ public class NewsEntity {
     private String coverImage;
 
     @ColumnInfo(name = "createdDate")
-    private String createdDate;
+    private String created_date;
 
     @ColumnInfo(name = "description")
     private String description;
@@ -32,10 +34,10 @@ public class NewsEntity {
     private String game;
 
     public NewsEntity(@NonNull String id, String title, String coverImage, String createdDate, String description, String body, String game) {
-        this.id = id;
+        this._id = id;
         this.title = title;
         this.coverImage = coverImage;
-        this.createdDate = createdDate;
+        this.created_date = createdDate;
         this.description = description;
         this.body = body;
         this.game = game;
@@ -47,11 +49,11 @@ public class NewsEntity {
 
     @NonNull
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(@NonNull String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getTitle() {
@@ -70,12 +72,8 @@ public class NewsEntity {
         this.coverImage = coverImage;
     }
 
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+    public String getCreated_date() {
+        return created_date;
     }
 
     public String getDescription() {
@@ -100,5 +98,9 @@ public class NewsEntity {
 
     public void setGame(String game) {
         this.game = game;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
     }
 }

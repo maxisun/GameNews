@@ -2,6 +2,8 @@ package com.example.max00.gamenews.Adapters;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +14,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.max00.gamenews.Classes.News;
+import com.example.max00.gamenews.Activities.ViewNewsActivity;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder>{
@@ -61,8 +62,42 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         holder.titulo.setText(news.getTitle());
         holder.subtitulo.setText(news.getDescription());
-        //holder.imagen.setImageResource(R.drawable.chino);
-        //holder.subtitulo.setText(news.getSubtitulo());
+
+        holder.titulo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("NewsInformation",news);
+                intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(position));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.subtitulo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("NewsInformation",news);
+                intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(position));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("NewsInformation",news);
+                intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(position));
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
 
         if (!(news.getCoverImage() == null)) {
             Picasso.with(context).load(news.getCoverImage()).error(R.drawable.chino).into(holder.imagen);

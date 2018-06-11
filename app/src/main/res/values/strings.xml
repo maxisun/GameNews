@@ -18,12 +18,16 @@
     <!-- drawer toggle strings -->
     <string name="open">Open</string>
     <string name="close">Close</string>
-    
+
     <!-- login strings-->
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="label_login">Sign in</string>
     <string name="sign_in_or_register">SIGN IN OR REGISTER</string>
+
+    <!-- view noticias info de text views-->
+    <string name="game">Game:</string>
+    <string name="category">Category:</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
