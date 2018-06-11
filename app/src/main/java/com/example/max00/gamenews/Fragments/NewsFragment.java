@@ -1,19 +1,23 @@
 package com.example.max00.gamenews.Fragments;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.max00.gamenews.Adapters.NewsAdapter;
-import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.R;
+import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
+import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,9 +40,11 @@ public class NewsFragment extends Fragment {
     //components
     private RecyclerView recyclerView;
     private NewsAdapter adapter;
+    private NewsViewModel newsViewModel;
+    private GridLayoutManager gridLayoutManager;
 
     // TODO: Rename and change types of parameters
-    private ArrayList<News> mParam1;
+    private List<NewsEntity> mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -51,15 +57,15 @@ public class NewsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @param param2 Parameter 2.
+     * @param param1 Parameter 1.
      * @return A new instance of fragment NewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(ArrayList<News> param1) {
+    public static NewsFragment newInstance(List<NewsEntity> param1) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1,param1);
+        args.putSerializable(ARG_PARAM1, (Serializable) param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +74,7 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = (ArrayList<News>) getArguments().getSerializable(ARG_PARAM1);
+            mParam1 = (List<NewsEntity>) getArguments().getSerializable(ARG_PARAM1);
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -79,25 +85,27 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.news_fragment, container, false);
         recyclerView = v.findViewById(R.id.recycleview_newsfragment);
-        /*LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        RecyclerView.LayoutManager layoutManager = linearLayoutManager;
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new NewsAdapter(mParam1,getContext());
-        recyclerView.setAdapter(adapter);*/
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
             @Override
-            public int getSpanSize(int position) {
-                if(position%3==0){
-                    return 2;
-                }else {
-                    return 1;
-                }
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities,getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position%3==0){
+                            return 2;
+                        }else {
+                            return 1;
+                        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
             }
         });
-        recyclerView.setLayoutManager(gridLayoutManager);
-        adapter = new NewsAdapter(mParam1,getActivity());
-        recyclerView.setAdapter(adapter);
         return v;
     }
 

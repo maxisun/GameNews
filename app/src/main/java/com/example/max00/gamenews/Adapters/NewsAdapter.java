@@ -1,5 +1,6 @@
 package com.example.max00.gamenews.Adapters;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -13,12 +14,14 @@ import android.widget.TextView;
 
 import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.R;
+import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder>{
-    public List<News> list;
+    public List<NewsEntity> list;
     private Context context;
     private LayoutInflater layoutInflater;
 
@@ -38,7 +41,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
     }
 
-    public NewsAdapter(List<News> news, Context context){
+    public NewsAdapter(List<NewsEntity> news, Context context){
         this.list=news;
         this.context=context;
     }
@@ -54,15 +57,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder,final int position) {
-        final News news = list.get(position);
+        final NewsEntity news = list.get(position);
 
         holder.titulo.setText(news.getTitle());
         holder.subtitulo.setText(news.getDescription());
         //holder.imagen.setImageResource(R.drawable.chino);
         //holder.subtitulo.setText(news.getSubtitulo());
 
-        if (!(news.getCoverImage() == null) /*&&
-                news.getCoverImage().length() > */) {
+        if (!(news.getCoverImage() == null)) {
             Picasso.with(context).load(news.getCoverImage()).error(R.drawable.chino).into(holder.imagen);
         } else {
             Picasso.with(context).load(R.drawable.chino).error(R.drawable.chino).into(holder.imagen);
@@ -72,6 +74,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (list!=null){
+            return list.size();
+        }else {
+            return 0;
+        }
+    }
+
+    public void setNewList(List<NewsEntity> newsEntities){
+        this.list = newsEntities;
+        notifyDataSetChanged();
     }
 }

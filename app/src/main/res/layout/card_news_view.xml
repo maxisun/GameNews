@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view_news"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="250dp"
     app:cardUseCompatPadding="true"
     android:elevation="7dp"
     app:cardCornerRadius="2dp">
@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/imagen_cardview_news"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="165dp"
         android:scaleType="centerCrop"
         android:src="@drawable/chino"/>
 

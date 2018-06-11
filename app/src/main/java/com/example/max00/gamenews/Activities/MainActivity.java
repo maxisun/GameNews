@@ -1,9 +1,13 @@
 package com.example.max00.gamenews.Activities;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +22,9 @@ import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.Classes.Users;
 import com.example.max00.gamenews.Fragments.NewsFragment;
 import com.example.max00.gamenews.R;
+import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
+import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository;
+import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,9 +40,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mdrawerLayout;
     private ActionBarDrawerToggle mactionBarDrawerToggle;
+    private NewsViewModel newsViewModel;
+    private NewsRepository newsRepository;
     private NavigationView navigationView;
-    private ArrayList<News> list;
-    private ArrayList<News> list2;
+    private List<NewsEntity> newsEntities;
+    private List<NewsEntity> list2;
     private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //inicializando atributos
         initialize();
-        //FillLolis();
-        newslist();
+        //newslist();
         mactionBarDrawerToggle = new ActionBarDrawerToggle(this,mdrawerLayout,R.string.open,R.string.close);
         mdrawerLayout.addDrawerListener(mactionBarDrawerToggle);
         //Synchronize the state of the drawer indicator/affordance with the linked DrawerLayout.
@@ -61,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.news_drawermenu_ID:
-                        fragment = NewsFragment.newInstance(list2);
+                        fragment = new NewsFragment();
+                        //fragment = NewsFragment.newInstance(list2);
                         fragtransac = true;
                         break;
                 }
@@ -89,15 +98,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*private void FillLolis(){
-        list = new ArrayList<>();
-        list.add(new News(R.drawable.chino,"la","la2"));
-        list.add(new News(R.drawable.chino,"la","la2"));
-        list.add(new News(R.drawable.chino,"la","la2"));
-        list.add(new News(R.drawable.chino,"la","la2"));
-    }*/
-
-    private void newslist(){
+    /*private void newslist(){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(new Gson())).build();
         GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
         Call<List<News>> news = gameNewsAPI.getNews("Beared " + token);
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }/*
     /*private void setFragmentByDefault(){
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, NewsFragment.newInstance(list2)).commit();
         MenuItem item = navigationView.getMenu().getItem(0);
@@ -137,4 +138,5 @@ public class MainActivity extends AppCompatActivity {
             token = sharedPreferences.getString("Token","");
         }
     }
+
 }
