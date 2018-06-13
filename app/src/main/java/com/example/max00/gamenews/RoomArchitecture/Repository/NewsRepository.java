@@ -1,29 +1,18 @@
 package com.example.max00.gamenews.RoomArchitecture.Repository;
 
-import android.app.Activity;
+
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.app.ActivityCompat;
-import android.widget.Toast;
-
 import com.example.max00.gamenews.API.GameNewsAPI;
-import com.example.max00.gamenews.Adapters.NewsAdapter;
-import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.RoomArchitecture.DAO.NewsDAO;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.GameNewsDatabase;
-import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

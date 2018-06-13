@@ -2,6 +2,7 @@ package com.example.max00.gamenews.API;
 
 import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
+import com.example.max00.gamenews.RoomArchitecture.Entity.PlayersEntity;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface GameNewsAPI {
     @FormUrlEncoded
     @POST("/login")
     Call<String> login(@Field("user") String username, @Field("password") String password);
+
+    @GET("/players")
+    Call<List<PlayersEntity>> getPlayers(@Header("Authorization") String authorization);
 }

@@ -77,7 +77,8 @@ public class CustomGameFragment extends Fragment {
         viewPager = v.findViewById(R.id.view_pagerID);
         //se usa porque estas adentro de un fragmento
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(NewsFragment.newInstance(category),"Generals");
+        viewPagerAdapter.addFragment(NewsFragment.newInstance(category),"GENERALS");
+        viewPagerAdapter.addFragment(PlayersFragment.newInstance(category),"TOP PLAYERS");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         return v;
