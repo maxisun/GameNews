@@ -16,7 +16,13 @@ public interface NewsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNews(NewsEntity... news);
 
-    @Query("SELECT * FROM News_table")
+    /*@Query("SELECT * FROM News_table")
+    LiveData<List<NewsEntity>> getAllNews();*/
+
+    @Query("SELECT * FROM News_table ORDER BY createdDate DESC")
     LiveData<List<NewsEntity>> getAllNews();
+
+    @Query("SELECT * FROM News_table WHERE game = :game ORDER BY createdDate DESC")
+    LiveData<List<NewsEntity>> getSpecifiedNew(String game);
 
 }

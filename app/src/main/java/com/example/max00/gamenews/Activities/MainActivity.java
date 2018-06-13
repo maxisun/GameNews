@@ -20,6 +20,7 @@ import com.example.max00.gamenews.API.GameNewsAPI;
 import com.example.max00.gamenews.API.NewsDeserializer;
 import com.example.max00.gamenews.Classes.News;
 import com.example.max00.gamenews.Classes.Users;
+import com.example.max00.gamenews.Fragments.CustomGameFragment;
 import com.example.max00.gamenews.Fragments.NewsFragment;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
@@ -69,8 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.news_drawermenu_ID:
-                        fragment = new NewsFragment();
+                        fragment = NewsFragment.newInstance(item.getTitle().toString());
                         //fragment = NewsFragment.newInstance(list2);
+                        fragtransac = true;
+                        break;
+                    case R.id.leaguelegends_drawermenu_ID:
+                        fragment = NewsFragment.newInstance(item.getTitle().toString());
                         fragtransac = true;
                         break;
                 }

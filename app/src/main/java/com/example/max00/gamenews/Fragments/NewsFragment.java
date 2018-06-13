@@ -2,6 +2,7 @@ package com.example.max00.gamenews.Fragments;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
@@ -45,15 +46,15 @@ public class NewsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private List<NewsEntity> mParam1;
-    private String mParam2;
+    private String category;
 
     private OnFragmentInteractionListener mListener;
 
     public NewsFragment() {
         // Required empty public constructor
     }
-
-    /**
+    //llenar el otro asterisco
+    /*
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
@@ -62,10 +63,10 @@ public class NewsFragment extends Fragment {
      * @return A new instance of fragment NewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewsFragment newInstance(List<NewsEntity> param1) {
+    public static NewsFragment newInstance(String category) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, (Serializable) param1);
+        args.putString("category",category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,7 +75,7 @@ public class NewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = (List<NewsEntity>) getArguments().getSerializable(ARG_PARAM1);
+            category = getArguments().getString("category");
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -85,8 +86,12 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.news_fragment, container, false);
         recyclerView = v.findViewById(R.id.recycleview_newsfragment);
-
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        if(category.equals("News")){
+            setNewsAll();
+        }else if (category.equals("lol")){
+            setNewslol();
+        }
+        /*newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
             @Override
             public void onChanged(@Nullable List<NewsEntity> newsEntities) {
@@ -105,9 +110,10 @@ public class NewsFragment extends Fragment {
                 recyclerView.setLayoutManager(gridLayoutManager);
                 recyclerView.setAdapter(adapter);
             }
-        });
+        });*/
         return v;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -146,5 +152,71 @@ public class NewsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /*private void setList(List<NewsEntity> list){
+        List<NewsEntity> run = new ArrayList<>();
+        for(NewsEntity i:run){
+            if()
+        }
+
+        if (category) {
+            List<NewEntity> aux=new ArrayList<>();
+            for(NewEntity x:list){
+                System.out.println(x.getGame()+"---"+category);
+                if(x.getGame().equals(category)){
+                    aux.add(x);
+                }
+            }
+            adapter.setNewList(aux);
+        }else{
+            adapter.setNewList(list);
+        }
+    }*/
+
+    private void setNewsAll(){
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities,getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position%3==0){
+                            return 2;
+                        }else {
+                            return 1;
+                        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+    }
+
+    private void setNewslol(){
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities,getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position%3==0){
+                            return 2;
+                        }else {
+                            return 1;
+                        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 }

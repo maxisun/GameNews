@@ -4,9 +4,9 @@
     <!-- drawer_menu strings -->
     <string name="news">News</string>
     <string name="games">Games</string>
-    <string name="leagueoflegends">League of Legends</string>
-    <string name="dota">Dota</string>
-    <string name="kaunter">CSGO</string>
+    <string name="leagueoflegends">lol</string>
+    <string name="dota">overwatch</string>
+    <string name="kaunter">csgo</string>
     <string name="settings">Settings</string>
     <string name="favoritos">Favourites</string>
     <string name="otros">More Options</string>
