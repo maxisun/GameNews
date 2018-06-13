@@ -90,6 +90,10 @@ public class NewsFragment extends Fragment {
             setNewsAll();
         }else if (category.equals("lol")){
             setNewslol();
+        }else if (category.equals("overwatch")){
+            setNewsOverwatch();
+        }else if (category.equals("csgo")){
+            setNewsCSGO();
         }
         /*newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
@@ -200,6 +204,52 @@ public class NewsFragment extends Fragment {
     private void setNewslol(){
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities,getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position%3==0){
+                            return 2;
+                        }else {
+                            return 1;
+                        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+    }
+
+    private void setNewsOverwatch(){
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizedoverwatch().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities,getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position%3==0){
+                            return 2;
+                        }else {
+                            return 1;
+                        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+    }
+
+    private void setNewsCSGO(){
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizedcsgo().observe(this, new Observer<List<NewsEntity>>() {
             @Override
             public void onChanged(@Nullable List<NewsEntity> newsEntities) {
                 adapter = new NewsAdapter(newsEntities,getActivity());

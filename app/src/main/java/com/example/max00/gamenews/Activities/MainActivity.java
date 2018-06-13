@@ -75,7 +75,15 @@ public class MainActivity extends AppCompatActivity {
                         fragtransac = true;
                         break;
                     case R.id.leaguelegends_drawermenu_ID:
-                        fragment = NewsFragment.newInstance(item.getTitle().toString());
+                        fragment = CustomGameFragment.newInstance(item.getTitle().toString());
+                        fragtransac = true;
+                        break;
+                    case R.id.dota_drawermenu_ID:
+                        fragment = CustomGameFragment.newInstance(item.getTitle().toString());
+                        fragtransac = true;
+                        break;
+                    case R.id.csgo_drawermenu_ID:
+                        fragment = CustomGameFragment.newInstance(item.getTitle().toString());
                         fragtransac = true;
                         break;
                 }

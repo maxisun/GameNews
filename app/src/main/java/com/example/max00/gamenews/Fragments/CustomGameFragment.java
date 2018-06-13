@@ -1,5 +1,6 @@
 package com.example.max00.gamenews.Fragments;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class CustomGameFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-    private String layouttitle;
+    private String category;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -43,7 +44,7 @@ public class CustomGameFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
+    /*
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
@@ -52,11 +53,10 @@ public class CustomGameFragment extends Fragment {
      * @return A new instance of fragment CustomGameFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CustomGameFragment newInstance(String param1, String param2) {
+    public static CustomGameFragment newInstance(String category) {
         CustomGameFragment fragment = new CustomGameFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("category", category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,16 +65,22 @@ public class CustomGameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            category = getArguments().getString("category");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_custom_game, container, false);
+        View v = inflater.inflate(R.layout.fragment_custom_game, container, false);
+        tabLayout = v.findViewById(R.id.TabLayoutID);
+        viewPager = v.findViewById(R.id.view_pagerID);
+        //se usa porque estas adentro de un fragmento
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        viewPagerAdapter.addFragment(NewsFragment.newInstance(category),"Generals");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

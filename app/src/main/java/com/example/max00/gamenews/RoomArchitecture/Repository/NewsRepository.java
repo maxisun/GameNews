@@ -36,12 +36,16 @@ public class NewsRepository {
     private LiveData<List<NewsEntity>> mAllNews;
     private String token;
     private LiveData<List<NewsEntity>> categorizednews;
+    private LiveData<List<NewsEntity>> categorizedoverwatch;
+    private LiveData<List<NewsEntity>> categorizedcsgo;
 
     public NewsRepository(Application application) {
         GameNewsDatabase db = GameNewsDatabase.getDatabase(application);
         newsDAO = db.newsDAO();
         mAllNews = newsDAO.getAllNews();
         categorizednews = newsDAO.getSpecifiedNew("lol");
+        categorizedoverwatch = newsDAO.getSpecifiedOverwatch("overwatch");
+        categorizedcsgo = newsDAO.getSpecifiedCSGO("csgo");
         SharedPreferences sharedPreferences = application.getSharedPreferences("Login_Token", Context.MODE_PRIVATE);
         token = sharedPreferences.getString("Token", "");
         fetchnews();
@@ -53,6 +57,14 @@ public class NewsRepository {
 
     public LiveData<List<NewsEntity>> getCategorizednews(){
         return categorizednews;
+    }
+
+    public LiveData<List<NewsEntity>> getCategorizedoverwatch() {
+        return categorizedoverwatch;
+    }
+
+    public LiveData<List<NewsEntity>> getCategorizedcsgo() {
+        return categorizedcsgo;
     }
 
     public void insert(List<NewsEntity> news) {
