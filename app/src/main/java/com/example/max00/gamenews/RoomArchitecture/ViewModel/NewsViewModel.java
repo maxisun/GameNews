@@ -16,6 +16,9 @@ public class NewsViewModel extends AndroidViewModel{
     private LiveData<List<NewsEntity>> categorizednews;
     private LiveData<List<NewsEntity>> categorizedoverwatch;
     private LiveData<List<NewsEntity>> categorizedcsgo;
+    private LiveData<List<NewsEntity>> lolimages;
+    private LiveData<List<NewsEntity>> overwatchimages;
+    private LiveData<List<NewsEntity>> csgoimages;
 
     public NewsViewModel(Application application){
         super(application);

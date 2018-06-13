@@ -79,6 +79,7 @@ public class CustomGameFragment extends Fragment {
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(NewsFragment.newInstance(category),"GENERALS");
         viewPagerAdapter.addFragment(PlayersFragment.newInstance(category),"TOP PLAYERS");
+        viewPagerAdapter.addFragment(GameImagesFragment.newInstance(category),"IMAGES");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         return v;

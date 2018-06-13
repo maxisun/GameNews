@@ -27,6 +27,9 @@ public class NewsRepository {
     private LiveData<List<NewsEntity>> categorizednews;
     private LiveData<List<NewsEntity>> categorizedoverwatch;
     private LiveData<List<NewsEntity>> categorizedcsgo;
+    private LiveData<List<NewsEntity>> lolimages;
+    private LiveData<List<NewsEntity>> overwatchimages;
+    private LiveData<List<NewsEntity>> csgoimages;
 
     public NewsRepository(Application application) {
         GameNewsDatabase db = GameNewsDatabase.getDatabase(application);

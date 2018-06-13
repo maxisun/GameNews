@@ -100,9 +100,9 @@ public class PlayersRepository {
                 @Override
                 public void onResponse(Call<List<PlayersEntity>> call, Response<List<PlayersEntity>> response) {
                     if (response.isSuccessful()) {
-                        System.out.println("cargando");
-                        System.out.println(token);
                         List<PlayersEntity> list = response.body();
+                        System.out.println(list.size()+" AAAAAAEEEFDGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                        Collections.reverse(list);
                         new PlayersRepository.insertAsyncTask(playersDAO).execute(list);
                     } else {
                         System.out.println("fallo");
