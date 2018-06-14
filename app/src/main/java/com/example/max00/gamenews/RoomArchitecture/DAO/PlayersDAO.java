@@ -25,4 +25,6 @@ public interface PlayersDAO {
     @Query("SELECT * FROM Players_Table WHERE game = :game")
     LiveData<List<PlayersEntity>> getCsgoPlayers(String game);
 
+    @Query("DELETE FROM Players_Table")
+    void deleteAllPlayers();
 }

@@ -116,22 +116,23 @@ public class NewsRepository {
                 @Override
                 public void onResponse(Call<List<NewsEntity>> call, Response<List<NewsEntity>> response) {
                     if (response.isSuccessful()) {
-                        info = "Actualizacion Completa";
+                        //info = "Actualizacion Completa";
+                        info = response.code()+"";
                         System.out.println("cargando");
                         System.out.println(token);
                         List<NewsEntity> list = response.body();
                         Collections.reverse(list);
                         new insertAsyncTask(newsDAO).execute(list);
                     } else {
-                        info = "error de conexion";
+                        info = ""+response.code();
+                        //info = "error de conexion";
                         System.out.println("fallo");
                     }
                 }
                 @Override
                 public void onFailure(Call<List<NewsEntity>> call, Throwable t) {
-                    System.out.println("on failure");
-                    info = "Error al actualizar";
-                    //Toast.makeText()
+                    //info = "Error al actualizar";
+                    info = ""+t.getMessage();
                 }
             });
             return null;
