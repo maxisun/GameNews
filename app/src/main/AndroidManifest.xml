@@ -26,7 +26,8 @@
         <activity
             android:name=".Activities.LoginActivity"
             android:label="@string/label_login"></activity>
-        <activity android:name=".Activities.ViewNewsActivity"></activity>
+        <activity android:name=".Activities.ViewNewsActivity" />
+        <activity android:name=".Activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

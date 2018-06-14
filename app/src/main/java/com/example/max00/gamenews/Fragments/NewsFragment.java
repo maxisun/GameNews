@@ -14,11 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.max00.gamenews.Adapters.NewsAdapter;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
+import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
+import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository.fetchNews;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -158,26 +161,6 @@ public class NewsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    /*private void setList(List<NewsEntity> list){
-        List<NewsEntity> run = new ArrayList<>();
-        for(NewsEntity i:run){
-            if()
-        }
-
-        if (category) {
-            List<NewEntity> aux=new ArrayList<>();
-            for(NewEntity x:list){
-                System.out.println(x.getGame()+"---"+category);
-                if(x.getGame().equals(category)){
-                    aux.add(x);
-                }
-            }
-            adapter.setNewList(aux);
-        }else{
-            adapter.setNewList(list);
-        }
-    }*/
-
     private void setNewsAll(){
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
@@ -199,6 +182,7 @@ public class NewsFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
+        Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
     }
 
     private void setNewslol(){
@@ -222,6 +206,7 @@ public class NewsFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
+        Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
     }
 
     private void setNewsOverwatch(){
@@ -245,6 +230,7 @@ public class NewsFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
+        Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
     }
 
     private void setNewsCSGO(){
@@ -268,5 +254,6 @@ public class NewsFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
+        Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
     }
 }

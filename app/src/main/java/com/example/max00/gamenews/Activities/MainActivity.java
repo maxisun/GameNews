@@ -86,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                         fragment = CustomGameFragment.newInstance(item.getTitle().toString());
                         fragtransac = true;
                         break;
+                    case R.id.menu_settings:
+                        Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
+                        startActivity(intent);
+                        break;
                 }
                 if(fragtransac){
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_main,fragment).commit();

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <!--android:checkableBehavior="single"-->
+    <group android:checkableBehavior="none">
         <item
             android:id="@+id/news_drawermenu_ID"
             android:icon="@drawable/icono_noticias"
@@ -27,9 +28,11 @@
     <item android:title="@string/otros">
         <menu>
             <item
+                android:id="@+id/menu_settings"
                 android:icon="@drawable/icono_settings"
                 android:title="@string/settings"/>
             <item
+                android:id="@+id/menu_favourites"
                 android:icon="@drawable/icono_favourites"
                 android:title="@string/favoritos"/>
         </menu>

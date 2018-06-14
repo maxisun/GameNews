@@ -6,6 +6,9 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.widget.Toast;
+
 import com.example.max00.gamenews.API.GameNewsAPI;
 import com.example.max00.gamenews.RoomArchitecture.DAO.NewsDAO;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
@@ -42,6 +45,7 @@ public class NewsRepository {
         token = sharedPreferences.getString("Token", "");
         fetchnews();
     }
+
 
     public LiveData<List<NewsEntity>> getmAllNews() {
         return mAllNews;
@@ -92,10 +96,15 @@ public class NewsRepository {
 
         private NewsDAO newsDAO;
         private String token;
+        private static String info;
 
         public fetchNews(String token, NewsDAO newsDAO) {
             this.newsDAO = newsDAO;
             this.token = token;
+        }
+
+        public static String getInfo() {
+            return info;
         }
 
         @Override
@@ -107,18 +116,22 @@ public class NewsRepository {
                 @Override
                 public void onResponse(Call<List<NewsEntity>> call, Response<List<NewsEntity>> response) {
                     if (response.isSuccessful()) {
+                        info = "Actualizacion Completa";
                         System.out.println("cargando");
                         System.out.println(token);
                         List<NewsEntity> list = response.body();
                         Collections.reverse(list);
                         new insertAsyncTask(newsDAO).execute(list);
                     } else {
+                        info = "error de conexion";
                         System.out.println("fallo");
                     }
                 }
                 @Override
                 public void onFailure(Call<List<NewsEntity>> call, Throwable t) {
                     System.out.println("on failure");
+                    info = "Error al actualizar";
+                    //Toast.makeText()
                 }
             });
             return null;

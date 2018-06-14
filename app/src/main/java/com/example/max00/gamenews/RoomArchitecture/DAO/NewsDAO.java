@@ -30,4 +30,7 @@ public interface NewsDAO {
 
     @Query("SELECT * FROM News_table WHERE game = :game ORDER BY createdDate DESC")
     LiveData<List<NewsEntity>> getSpecifiedCSGO(String game);
+
+    @Query("DELETE FROM News_table")
+    void deleteAllNews();
 }

@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && !response.body().equals("") && !username.getText().equals("") && !password.getText().equals("")) {
                     sharedpreferences(response.body());
-                    Toast.makeText(LoginActivity.this,response.body(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,"Bienvenido", Toast.LENGTH_SHORT).show();
                     //System.out.println(response.body());
                     startativity();
                 } else {
