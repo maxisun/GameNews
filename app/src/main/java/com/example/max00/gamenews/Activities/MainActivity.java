@@ -26,11 +26,15 @@ import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
+import com.example.max00.gamenews.RoomArchitecture.ViewModel.PlayersViewModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,11 +46,12 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mdrawerLayout;
     private ActionBarDrawerToggle mactionBarDrawerToggle;
     private NewsViewModel newsViewModel;
-    private NewsRepository newsRepository;
+    private PlayersViewModel playersViewModel;
     private NavigationView navigationView;
     private List<NewsEntity> newsEntities;
     private List<NewsEntity> list2;
     private String token;
+    private String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //inicializando atributos
         initialize();
-        //newslist();
         mactionBarDrawerToggle = new ActionBarDrawerToggle(this,mdrawerLayout,R.string.open,R.string.close);
         mdrawerLayout.addDrawerListener(mactionBarDrawerToggle);
         //Synchronize the state of the drawer indicator/affordance with the linked DrawerLayout.
@@ -104,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
     private void initialize(){
         mdrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        newsViewModel = new NewsViewModel(getApplication());
+        playersViewModel = new PlayersViewModel(getApplication());
     }
 
     //funcion para hacer que funcione el boton para mostrar el drawerlayout
@@ -137,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
             }
         });
-    }/*
+    }*/
     /*private void setFragmentByDefault(){
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, NewsFragment.newInstance(list2)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, NewsFragment.newInstance("News")).commit();
         MenuItem item = navigationView.getMenu().getItem(0);
         item.setChecked(true);
         getSupportActionBar().setTitle(item.getTitle());

@@ -96,7 +96,7 @@ public class NewsRepository {
 
         private NewsDAO newsDAO;
         private String token;
-        private static String info;
+        private static String status;
 
         public fetchNews(String token, NewsDAO newsDAO) {
             this.newsDAO = newsDAO;
@@ -104,7 +104,7 @@ public class NewsRepository {
         }
 
         public static String getInfo() {
-            return info;
+            return status;
         }
 
         @Override
@@ -117,14 +117,14 @@ public class NewsRepository {
                 public void onResponse(Call<List<NewsEntity>> call, Response<List<NewsEntity>> response) {
                     if (response.isSuccessful()) {
                         //info = "Actualizacion Completa";
-                        info = response.code()+"";
+                        status = response.code()+"";
                         System.out.println("cargando");
                         System.out.println(token);
                         List<NewsEntity> list = response.body();
                         Collections.reverse(list);
                         new insertAsyncTask(newsDAO).execute(list);
                     } else {
-                        info = ""+response.code();
+                        status = "Your session has expired "+response.code();
                         //info = "error de conexion";
                         System.out.println("fallo");
                     }
@@ -132,7 +132,7 @@ public class NewsRepository {
                 @Override
                 public void onFailure(Call<List<NewsEntity>> call, Throwable t) {
                     //info = "Error al actualizar";
-                    info = ""+t.getMessage();
+                    status = "No internet connection avalilable";
                 }
             });
             return null;

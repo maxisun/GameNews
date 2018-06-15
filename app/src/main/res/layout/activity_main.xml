@@ -9,6 +9,7 @@
     tools:openDrawer="start"
     tools:context=".Activities.MainActivity">
 
+
     <FrameLayout
         android:id="@+id/frame_main"
         android:layout_width="match_parent"
