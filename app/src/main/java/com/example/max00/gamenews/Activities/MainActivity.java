@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository.fetchNews;
+import com.example.max00.gamenews.RoomArchitecture.Repository.CategoryRepository.CallCategories;
 import com.example.max00.gamenews.API.GameNewsAPI;
 import com.example.max00.gamenews.API.NewsDeserializer;
 import com.example.max00.gamenews.Classes.News;
@@ -25,6 +26,7 @@ import com.example.max00.gamenews.Fragments.NewsFragment;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository;
+import com.example.max00.gamenews.RoomArchitecture.ViewModel.CategoryViewModel;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.PlayersViewModel;
 import com.google.gson.Gson;
@@ -47,11 +49,12 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mactionBarDrawerToggle;
     private NewsViewModel newsViewModel;
     private PlayersViewModel playersViewModel;
+    private CategoryViewModel categoryViewModel;
     private NavigationView navigationView;
-    private List<NewsEntity> newsEntities;
-    private List<NewsEntity> list2;
     private String token;
     private String status;
+    private NewsFragment newsFragment = NewsFragment.newInstance("News");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
                         startActivity(intent);
                         break;
+                    default:
+
+                        break;
                 }
                 if(fragtransac){
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_main,fragment).commit();
@@ -111,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         newsViewModel = new NewsViewModel(getApplication());
         playersViewModel = new PlayersViewModel(getApplication());
         fetchNews.setContext(getApplicationContext());
+        categoryViewModel = new CategoryViewModel(getApplication());
+
     }
 
     //funcion para hacer que funcione el boton para mostrar el drawerlayout
@@ -146,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }*/
     /*private void setFragmentByDefault(){
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, NewsFragment.newInstance("News")).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, newsFragment).commit();
         MenuItem item = navigationView.getMenu().getItem(0);
         item.setChecked(true);
         getSupportActionBar().setTitle(item.getTitle());
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         if(!sharedPreferences.contains("Token")){
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
-            finish();
+            finish();;
         }else {
             token = sharedPreferences.getString("Token","");
         }

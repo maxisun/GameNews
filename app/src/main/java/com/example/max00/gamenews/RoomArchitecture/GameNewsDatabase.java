@@ -8,16 +8,19 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.max00.gamenews.RoomArchitecture.DAO.CategoryDAO;
 import com.example.max00.gamenews.RoomArchitecture.DAO.NewsDAO;
 import com.example.max00.gamenews.RoomArchitecture.DAO.PlayersDAO;
+import com.example.max00.gamenews.RoomArchitecture.Entity.CategoryEntity;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Entity.PlayersEntity;
 
-@Database(entities = {NewsEntity.class, PlayersEntity.class}, exportSchema = false, version = 1)
+@Database(entities = {NewsEntity.class, PlayersEntity.class, CategoryEntity.class}, exportSchema = false, version = 1)
 public abstract class GameNewsDatabase extends RoomDatabase {
 
     public abstract NewsDAO newsDAO();
     public abstract PlayersDAO playersDAO();
+    public abstract CategoryDAO categoryDAO();
 
     private static GameNewsDatabase INSTANCE;
 

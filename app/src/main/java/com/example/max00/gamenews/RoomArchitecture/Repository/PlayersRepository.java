@@ -101,8 +101,6 @@ public class PlayersRepository {
                 public void onResponse(Call<List<PlayersEntity>> call, Response<List<PlayersEntity>> response) {
                     if (response.isSuccessful()) {
                         List<PlayersEntity> list = response.body();
-                        System.out.println(list.size()+" AAAAAAEEEFDGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                        Collections.reverse(list);
                         new PlayersRepository.insertAsyncTask(playersDAO).execute(list);
                     } else {
                         System.out.println("fallo");

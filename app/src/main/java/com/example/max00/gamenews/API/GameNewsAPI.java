@@ -1,6 +1,7 @@
 package com.example.max00.gamenews.API;
 
 import com.example.max00.gamenews.Classes.News;
+import com.example.max00.gamenews.RoomArchitecture.Entity.CategoryEntity;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Entity.PlayersEntity;
 
@@ -26,4 +27,7 @@ public interface GameNewsAPI {
 
     @GET("/players")
     Call<List<PlayersEntity>> getPlayers(@Header("Authorization") String authorization);
+
+    @GET("/news/type/list")
+    Call<List<String>> getCategories(@Header("Authotization") String authorization);
 }
