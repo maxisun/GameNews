@@ -22,15 +22,6 @@ public interface NewsDAO {
     @Query("SELECT * FROM News_table ORDER BY createdDate DESC")
     LiveData<List<NewsEntity>> getAllNews();
 
-    @Query("SELECT * FROM News_table WHERE game = :game ORDER BY createdDate DESC")
-    LiveData<List<NewsEntity>> getSpecifiedNew(String game);
-
-    @Query("SELECT * FROM News_table WHERE game = :game ORDER BY createdDate DESC")
-    LiveData<List<NewsEntity>> getSpecifiedOverwatch(String game);
-
-    @Query("SELECT * FROM News_table WHERE game = :game ORDER BY createdDate DESC")
-    LiveData<List<NewsEntity>> getSpecifiedCSGO(String game);
-
     @Query("SELECT * FROM news_table WHERE game = :game ORDER BY createdDate DESC")
     LiveData<List<NewsEntity>> getCategorizedNews(String game);
 

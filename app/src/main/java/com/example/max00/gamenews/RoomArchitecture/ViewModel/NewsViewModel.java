@@ -14,36 +14,15 @@ public class NewsViewModel extends AndroidViewModel{
 
     private NewsRepository newsRepository;
     private LiveData<List<NewsEntity>> mAllNews;
-    private LiveData<List<NewsEntity>> categorizednews;
-    private LiveData<List<NewsEntity>> categorizedoverwatch;
-    private LiveData<List<NewsEntity>> categorizedcsgo;
-    private LiveData<List<NewsEntity>> lolimages;
-    private LiveData<List<NewsEntity>> overwatchimages;
-    private LiveData<List<NewsEntity>> csgoimages;
 
     public NewsViewModel(Application application){
         super(application);
         newsRepository = new NewsRepository(application);
         mAllNews = newsRepository.getmAllNews();
-        categorizednews = newsRepository.getCategorizednews();
-        categorizedoverwatch = newsRepository.getCategorizedoverwatch();
-        categorizedcsgo = newsRepository.getCategorizedcsgo();
     }
 
     public LiveData<List<NewsEntity>> getmAllNews(){
         return mAllNews;
-    }
-
-    public LiveData<List<NewsEntity>> getCategorizednews(){
-        return categorizednews;
-    }
-
-    public LiveData<List<NewsEntity>> getCategorizedoverwatch() {
-        return categorizedoverwatch;
-    }
-
-    public LiveData<List<NewsEntity>> getCategorizedcsgo() {
-        return categorizedcsgo;
     }
 
     public LiveData<List<NewsEntity>> getCategorizedNews(String game){

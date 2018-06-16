@@ -88,14 +88,10 @@ public class NewsFragment extends Fragment {
         View v = inflater.inflate(R.layout.news_fragment, container, false);
         recyclerView = v.findViewById(R.id.recycleview_newsfragment);
         swipeRefreshLayout = v.findViewById(R.id.News_Refresh);
-        if(category.equals("News")){
+        if(category.equals("News")) {
             setNewsAll();
-        }else if (category.equals("lol")){
-            setNewslol();
-        }else if (category.equals("overwatch")){
-            setNewsOverwatch();
-        }else if (category.equals("csgo")){
-            setNewsCSGO();
+        } else {
+            getCategorizedNews();
         }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -173,7 +169,7 @@ public class NewsFragment extends Fragment {
             }
         });
     }
-
+/*
     private void setNewslol(){
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
@@ -242,8 +238,27 @@ public class NewsFragment extends Fragment {
             }
         });
     }
-
+*/
     private void getCategorizedNews(){
-
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizedNews(category).observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities, getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if (position % 3 == 0) {
+                            return 2;
+                        } else {
+                            return 1;
+                        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 }

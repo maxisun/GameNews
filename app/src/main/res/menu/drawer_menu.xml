@@ -8,6 +8,18 @@
             android:icon="@drawable/icono_noticias"
             android:title="@string/news"/>
 
+        <item
+            android:id="@+id/categories_games"
+            android:title="@string/games">
+            <menu>
+                <group
+                    android:id="@+id/categories"
+                    android:checkableBehavior="single">
+                </group>
+            </menu>
+        </item>
+
+<!--
     <item android:title="@string/games">
         <menu>
             <item
@@ -24,7 +36,7 @@
                 android:title="@string/kaunter"/>
         </menu>
     </item>
-
+-->
     <item android:title="@string/otros">
         <menu>
             <item
@@ -37,7 +49,7 @@
                 android:title="@string/favoritos"/>
         </menu>
     </item>
-
+<!--
         <item
             android:id="@+id/categories_games"
             android:title="@string/games">
@@ -48,6 +60,6 @@
                 </group>
             </menu>
         </item>
-
+-->
     </group>
 </menu>

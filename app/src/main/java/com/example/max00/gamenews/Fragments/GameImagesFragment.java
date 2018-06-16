@@ -82,13 +82,7 @@ public class GameImagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_game_images, container, false);
         recyclerView = v.findViewById(R.id.recycleview_Game_Images);
-        if(category.equals("lol")){
-            setlolImages();
-        }else if (category.equals("overwatch")){
-            setoverwatchimages();
-        }else if (category.equals("csgo")){
-            setcsgoimages();
-        }
+        setImages();
         return v;
     }
 
@@ -131,37 +125,9 @@ public class GameImagesFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void setlolImages(){
+    private void setImages(){
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                adapter = new ImagesAdapter(newsEntities,getActivity());
-                gridLayoutManager = new GridLayoutManager(getActivity(),2);
-                gridLayoutManager.setSpanCount(2);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    private void setoverwatchimages(){
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getCategorizedoverwatch().observe(this, new Observer<List<NewsEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                adapter = new ImagesAdapter(newsEntities,getActivity());
-                gridLayoutManager = new GridLayoutManager(getActivity(),2);
-                gridLayoutManager.setSpanCount(2);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    private void setcsgoimages(){
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getCategorizedcsgo().observe(this, new Observer<List<NewsEntity>>() {
+        newsViewModel.getCategorizedNews(category).observe(this, new Observer<List<NewsEntity>>() {
             @Override
             public void onChanged(@Nullable List<NewsEntity> newsEntities) {
                 adapter = new ImagesAdapter(newsEntities,getActivity());
