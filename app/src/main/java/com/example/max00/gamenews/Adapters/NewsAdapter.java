@@ -66,36 +66,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.titulo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("NewsInformation",news);
-                intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                openactivity(v,news);
             }
         });
 
         holder.subtitulo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("NewsInformation",news);
-                intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                openactivity(v,news);
             }
         });
 
         holder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("NewsInformation",news);
-                intent.putExtra(Intent.EXTRA_TEXT,String.valueOf(position));
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+            openactivity(v,news);
             }
         });
 
@@ -119,5 +104,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void setNewList(List<NewsEntity> newsEntities){
         this.list = newsEntities;
         notifyDataSetChanged();
+    }
+
+    private void openactivity(View v,NewsEntity news){
+        Intent intent = new Intent(v.getContext(), ViewNewsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("NewsInformation",news);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 }

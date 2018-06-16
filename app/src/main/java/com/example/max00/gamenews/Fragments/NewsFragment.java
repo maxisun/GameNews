@@ -1,42 +1,27 @@
 package com.example.max00.gamenews.Fragments;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.example.max00.gamenews.API.GameNewsAPI;
-import com.example.max00.gamenews.Activities.LoginActivity;
 import com.example.max00.gamenews.Adapters.NewsAdapter;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
-import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository.fetchNews;
-import com.google.gson.Gson;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -57,8 +42,8 @@ public class NewsFragment extends Fragment {
     private NewsAdapter adapter;
     private NewsViewModel newsViewModel;
     private GridLayoutManager gridLayoutManager;
-    private SharedPreferences preferences;
-    private String token;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     // TODO: Rename and change types of parameters
     private List<NewsEntity> mParam1;
@@ -102,6 +87,7 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.news_fragment, container, false);
         recyclerView = v.findViewById(R.id.recycleview_newsfragment);
+        swipeRefreshLayout = v.findViewById(R.id.News_Refresh);
         if(category.equals("News")){
             setNewsAll();
         }else if (category.equals("lol")){
@@ -111,26 +97,17 @@ public class NewsFragment extends Fragment {
         }else if (category.equals("csgo")){
             setNewsCSGO();
         }
-        /*newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                adapter = new NewsAdapter(newsEntities,getActivity());
-                gridLayoutManager = new GridLayoutManager(getActivity(),2);
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        if(position%3==0){
-                            return 2;
-                        }else {
-                            return 1;
-                        }
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        newsViewModel = new NewsViewModel(getActivity().getApplication());
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                });
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
+                }, 3500);
             }
-        });*/
+        });
         return v;
     }
 
@@ -175,148 +152,94 @@ public class NewsFragment extends Fragment {
     }
 
     private void setNewsAll(){
-        if(fetchNews.getInfo().equals("Your session has expired 401")){
-            Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
-            cleanPreferences();
-        } else if (fetchNews.getInfo().equals("200") || fetchNews.getInfo().equals("No internet connection avalilable")){
-            newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-            newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
-                @Override
-                public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                    adapter = new NewsAdapter(newsEntities,getActivity());
-                    gridLayoutManager = new GridLayoutManager(getActivity(),2);
-                    gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                        @Override
-                        public int getSpanSize(int position) {
-                            if(position%3==0){
-                                return 2;
-                            }else {
-                                return 1;
-                            }
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getmAllNews().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities,getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(),2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if(position%3==0){
+                            return 2;
+                        }else {
+                            return 1;
                         }
-                    });
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    recyclerView.setAdapter(adapter);
-                }
-            });
-            //Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     private void setNewslol(){
-        if(fetchNews.getInfo().equals("Your session has expired 401")){
-            Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
-            cleanPreferences();
-        }else if (fetchNews.getInfo().equals("No internet connection avalilable") || fetchNews.getInfo().equals("200")) {
-            newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-            newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
-                @Override
-                public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                    adapter = new NewsAdapter(newsEntities, getActivity());
-                    gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                    gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                        @Override
-                        public int getSpanSize(int position) {
-                            if (position % 3 == 0) {
-                                return 2;
-                            } else {
-                                return 1;
-                            }
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities, getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if (position % 3 == 0) {
+                            return 2;
+                        } else {
+                            return 1;
                         }
-                    });
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    recyclerView.setAdapter(adapter);
-                }
-            });
-        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     private void setNewsOverwatch(){
-        if(fetchNews.getInfo().equals("Your session has expired 401")){
-            Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
-            cleanPreferences();
-        }else if(fetchNews.getInfo().equals("No internet connection avalilable") || fetchNews.getInfo().equals("200")) {
-            newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-            newsViewModel.getCategorizedoverwatch().observe(this, new Observer<List<NewsEntity>>() {
-                @Override
-                public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                    adapter = new NewsAdapter(newsEntities, getActivity());
-                    gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                    gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                        @Override
-                        public int getSpanSize(int position) {
-                            if (position % 3 == 0) {
-                                return 2;
-                            } else {
-                                return 1;
-                            }
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizedoverwatch().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities, getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if (position % 3 == 0) {
+                            return 2;
+                        } else {
+                            return 1;
                         }
-                    });
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    recyclerView.setAdapter(adapter);
-                }
-            });
-        }
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     private void setNewsCSGO(){
-        if (fetchNews.getInfo().equals("Your session has expired 401")){
-            Toast.makeText(getActivity(),fetchNews.getInfo(),Toast.LENGTH_SHORT).show();
-            cleanPreferences();
-        }else if (fetchNews.getInfo().equals("No internet connection avalilable") || fetchNews.getInfo().equals("200")) {
-            newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-            newsViewModel.getCategorizedcsgo().observe(this, new Observer<List<NewsEntity>>() {
-                @Override
-                public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                    adapter = new NewsAdapter(newsEntities, getActivity());
-                    gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                    gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                        @Override
-                        public int getSpanSize(int position) {
-                            if (position % 3 == 0) {
-                                return 2;
-                            } else {
-                                return 1;
-                            }
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel.getCategorizedcsgo().observe(this, new Observer<List<NewsEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
+                adapter = new NewsAdapter(newsEntities, getActivity());
+                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        if (position % 3 == 0) {
+                            return 2;
+                        } else {
+                            return 1;
                         }
-                    });
-                    recyclerView.setLayoutManager(gridLayoutManager);
-                    recyclerView.setAdapter(adapter);
-                }
-            });
-        }
-    }
-
-    private void cleanPreferences(){
-        preferences = getActivity().getSharedPreferences("Login_Token",Context.MODE_PRIVATE);
-        preferences.edit().clear().apply();
-        Intent intent = new Intent(getActivity(),LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-    /*private void ping(){
-        preferences = getActivity().getSharedPreferences("Login_Token",Context.MODE_PRIVATE);
-        token = preferences.getString("Token","");
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(new Gson())).build();
-        GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
-        Call<List<NewsEntity>> news = gameNewsAPI.getNews("Beared " + token);
-        news.enqueue(new Callback<List<NewsEntity>>() {
-            @Override
-            public void onResponse(Call<List<NewsEntity>> call, Response<List<NewsEntity>> response) {
-                if (response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Connection Stablished",Toast.LENGTH_SHORT);
-                    System.out.println("exito");
-                } else {
-                    Toast.makeText(getActivity(),"Connection not established",Toast.LENGTH_SHORT);
-                    System.out.println("fallo");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<NewsEntity>> call, Throwable t) {
-
+                    }
+                });
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setAdapter(adapter);
             }
         });
-    }*/
+    }
 }

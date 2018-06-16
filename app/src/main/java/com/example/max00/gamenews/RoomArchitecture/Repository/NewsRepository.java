@@ -4,12 +4,12 @@ package com.example.max00.gamenews.RoomArchitecture.Repository;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
 import android.widget.Toast;
-
 import com.example.max00.gamenews.API.GameNewsAPI;
+import com.example.max00.gamenews.Activities.LoginActivity;
 import com.example.max00.gamenews.RoomArchitecture.DAO.NewsDAO;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.GameNewsDatabase;
@@ -30,12 +30,11 @@ public class NewsRepository {
     private LiveData<List<NewsEntity>> categorizednews;
     private LiveData<List<NewsEntity>> categorizedoverwatch;
     private LiveData<List<NewsEntity>> categorizedcsgo;
-    private LiveData<List<NewsEntity>> lolimages;
-    private LiveData<List<NewsEntity>> overwatchimages;
-    private LiveData<List<NewsEntity>> csgoimages;
+    private Application application;
 
     public NewsRepository(Application application) {
         GameNewsDatabase db = GameNewsDatabase.getDatabase(application);
+        this.application = application;
         newsDAO = db.newsDAO();
         mAllNews = newsDAO.getAllNews();
         categorizednews = newsDAO.getSpecifiedNew("lol");
@@ -68,7 +67,7 @@ public class NewsRepository {
     }
 
     public void fetchnews() {
-        new fetchNews(token,newsDAO).execute();
+        new fetchNews(token,newsDAO,application).execute();
     }
 
 
@@ -96,15 +95,17 @@ public class NewsRepository {
 
         private NewsDAO newsDAO;
         private String token;
-        private static String status;
+        private static Context context;
+        private Application application;
 
-        public fetchNews(String token, NewsDAO newsDAO) {
+        public fetchNews(String token, NewsDAO newsDAO, Application application) {
             this.newsDAO = newsDAO;
             this.token = token;
+            this.application = application;
         }
 
-        public static String getInfo() {
-            return status;
+        public static void setContext(Context context) {
+            fetchNews.context = context;
         }
 
         @Override
@@ -116,50 +117,30 @@ public class NewsRepository {
                 @Override
                 public void onResponse(Call<List<NewsEntity>> call, Response<List<NewsEntity>> response) {
                     if (response.isSuccessful()) {
-                        //info = "Actualizacion Completa";
-                        status = response.code()+"";
-                        System.out.println("cargando");
-                        System.out.println(token);
                         List<NewsEntity> list = response.body();
                         Collections.reverse(list);
                         new insertAsyncTask(newsDAO).execute(list);
                     } else {
-                        status = "Your session has expired "+response.code();
-                        //info = "error de conexion";
-                        System.out.println("fallo");
+                        Toast.makeText(context,"Su sesion ha expirado: ERROR "+response.code(),Toast.LENGTH_LONG).show();
+                        cleanPreferences();
                     }
                 }
                 @Override
                 public void onFailure(Call<List<NewsEntity>> call, Throwable t) {
-                    //info = "Error al actualizar";
-                    status = "No internet connection avalilable";
+                    Toast.makeText(context,t.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             });
             return null;
         }
+
+        public void cleanPreferences(){
+            SharedPreferences preferences = application.getSharedPreferences("Login_Token",Context.MODE_PRIVATE);
+            preferences.edit().clear().apply();
+            Intent intent = new Intent(context,LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+        }
     }
 }
-    /*public void getallnewsrequest(String token){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(new Gson())).build();
-        GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
-        Call<List<NewsEntity>> news = gameNewsAPI.getNews("Beared " + token);
-        news.enqueue(new Callback<List<NewsEntity>>() {
-            @Override
-            public void onResponse(Call<List<NewsEntity>> call, Response<List<NewsEntity>> response) {
-                if(response.isSuccessful()){
-                    System.out.println("cargando");
-                    List<NewsEntity> list = response.body();
-                    Collections.reverse(list);
-                    new insertAsyncTask(newsDAO).execute(list);
-                }else {
-                    System.out.println("fallo");
-                }
-            }
-            @Override
-            public void onFailure(Call<List<NewsEntity>> call, Throwable t) {
-                System.out.println("on failure");
-            }
-        });
-    }*/
 
 

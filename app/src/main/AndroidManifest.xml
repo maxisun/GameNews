@@ -25,9 +25,10 @@
         </activity>
         <activity
             android:name=".Activities.LoginActivity"
-            android:label="@string/label_login"></activity>
+            android:label="@string/label_login" />
         <activity android:name=".Activities.ViewNewsActivity" />
-        <activity android:name=".Activities.SettingsActivity"></activity>
+        <activity android:name=".Activities.SettingsActivity" />
+        <activity android:name=".Activities.ViewPlayersActivity"></activity>
     </application>
 
 </manifest>

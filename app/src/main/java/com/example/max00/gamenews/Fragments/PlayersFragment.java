@@ -5,8 +5,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +44,7 @@ public class PlayersFragment extends Fragment {
     private PlayersAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private PlayersViewModel playersViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
     // TODO: Rename and change types of parameters
     private String category;
     private String mParam2;
@@ -83,6 +86,7 @@ public class PlayersFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_players, container, false);
         recyclerView = v.findViewById(R.id.recycleview_playersfragment);
+        swipeRefreshLayout = v.findViewById(R.id.Players_Refresh);
         if(category.equals("lol")){
             setLolplayers();
         }else if (category.equals("overwatch")){
@@ -90,6 +94,17 @@ public class PlayersFragment extends Fragment {
         }else if (category.equals("csgo")){
             setCsgoplayers();
         }
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        playersViewModel = new PlayersViewModel(getActivity().getApplication());
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3500);
+            }
+        });
         return v;
     }
 

@@ -61,11 +61,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && !response.body().equals("") && !username.getText().equals("") && !password.getText().equals("")) {
                     sharedpreferences(response.body());
-                    Toast.makeText(LoginActivity.this,"Bienvenido", Toast.LENGTH_SHORT).show();
-                    //System.out.println(response.body());
+                    Toast.makeText(LoginActivity.this,"Bienvenid@", Toast.LENGTH_SHORT).show();
                     startativity();
                 } else {
-                    Toast.makeText(LoginActivity.this, "no response", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -87,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("Login_Token", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("Token",token);
-        //asyncrono, en backgorund
+        //asyncrono
         editor.apply();
     }
 }

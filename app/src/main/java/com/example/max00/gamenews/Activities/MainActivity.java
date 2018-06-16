@@ -15,7 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository.fetchNews;
 import com.example.max00.gamenews.API.GameNewsAPI;
 import com.example.max00.gamenews.API.NewsDeserializer;
 import com.example.max00.gamenews.Classes.News;
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
         newsViewModel = new NewsViewModel(getApplication());
         playersViewModel = new PlayersViewModel(getApplication());
+        fetchNews.setContext(getApplicationContext());
     }
 
     //funcion para hacer que funcione el boton para mostrar el drawerlayout

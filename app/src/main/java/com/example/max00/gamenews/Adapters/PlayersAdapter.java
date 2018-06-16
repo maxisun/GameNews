@@ -1,6 +1,8 @@
 package com.example.max00.gamenews.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.max00.gamenews.Activities.ViewNewsActivity;
+import com.example.max00.gamenews.Activities.ViewPlayersActivity;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.PlayersEntity;
 import com.squareup.picasso.Picasso;
@@ -61,6 +65,27 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
         } else {
             Picasso.with(context).load(R.drawable.chino).error(R.drawable.chino).into(holder.imagen);
         }
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openactivity(v,playersEntity);
+            }
+        });
+
+        holder.bio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openactivity(v,playersEntity);
+            }
+        });
+
+        holder.imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openactivity(v,playersEntity);
+            }
+        });
     }
 
     @Override
@@ -70,5 +95,13 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.PlayersV
         }else {
             return 0;
         }
+    }
+
+    private void openactivity(View v, PlayersEntity playersEntity){
+        Intent intent = new Intent(v.getContext(), ViewPlayersActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("PlayersInformation",playersEntity);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 }
