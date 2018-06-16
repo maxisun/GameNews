@@ -12,9 +12,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.max00.gamenews.Adapters.NewsAdapter;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
@@ -43,6 +48,7 @@ public class NewsFragment extends Fragment {
     private NewsViewModel newsViewModel;
     private GridLayoutManager gridLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SearchView searchView;
 
 
     // TODO: Rename and change types of parameters
@@ -88,7 +94,9 @@ public class NewsFragment extends Fragment {
         View v = inflater.inflate(R.layout.news_fragment, container, false);
         recyclerView = v.findViewById(R.id.recycleview_newsfragment);
         swipeRefreshLayout = v.findViewById(R.id.News_Refresh);
-        if(category.equals("News")) {
+        if (category.equals("News")) {
+            setNewsAll();
+        }else if (category.equals("Favourites")){
             setNewsAll();
         } else {
             getCategorizedNews();
@@ -98,8 +106,11 @@ public class NewsFragment extends Fragment {
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
-                        newsViewModel = new NewsViewModel(getActivity().getApplication());
-                        swipeRefreshLayout.setRefreshing(false);
+                        try {
+                            newsViewModel = new NewsViewModel(getActivity().getApplication());
+                            swipeRefreshLayout.setRefreshing(false);
+                        }catch (Exception e){
+                        }
                     }
                 }, 3500);
             }
@@ -169,76 +180,7 @@ public class NewsFragment extends Fragment {
             }
         });
     }
-/*
-    private void setNewslol(){
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getCategorizednews().observe(this, new Observer<List<NewsEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                adapter = new NewsAdapter(newsEntities, getActivity());
-                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        if (position % 3 == 0) {
-                            return 2;
-                        } else {
-                            return 1;
-                        }
-                    }
-                });
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
 
-    private void setNewsOverwatch(){
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getCategorizedoverwatch().observe(this, new Observer<List<NewsEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                adapter = new NewsAdapter(newsEntities, getActivity());
-                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        if (position % 3 == 0) {
-                            return 2;
-                        } else {
-                            return 1;
-                        }
-                    }
-                });
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    private void setNewsCSGO(){
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-        newsViewModel.getCategorizedcsgo().observe(this, new Observer<List<NewsEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<NewsEntity> newsEntities) {
-                adapter = new NewsAdapter(newsEntities, getActivity());
-                gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        if (position % 3 == 0) {
-                            return 2;
-                        } else {
-                            return 1;
-                        }
-                    }
-                });
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-*/
     private void getCategorizedNews(){
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         newsViewModel.getCategorizedNews(category).observe(this, new Observer<List<NewsEntity>>() {

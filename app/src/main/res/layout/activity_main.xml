@@ -9,6 +9,11 @@
     tools:openDrawer="start"
     tools:context=".Activities.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary" />
 
     <FrameLayout
         android:id="@+id/frame_main"

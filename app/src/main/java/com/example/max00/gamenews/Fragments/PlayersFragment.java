@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.max00.gamenews.Adapters.NewsAdapter;
 import com.example.max00.gamenews.Adapters.PlayersAdapter;
@@ -104,8 +105,11 @@ public class PlayersFragment extends Fragment {
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
-                        playersViewModel = new PlayersViewModel(getActivity().getApplication());
-                        swipeRefreshLayout.setRefreshing(false);
+                        try {
+                            playersViewModel = new PlayersViewModel(getActivity().getApplication());
+                            swipeRefreshLayout.setRefreshing(false);
+                        }catch (Exception e){
+                        }
                     }
                 }, 3500);
             }

@@ -62,9 +62,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.menu_favourites:
+                        fragment = NewsFragment.newInstance(item.getTitle().toString());
+                        fragtransac = true;
+                        break;
                     default:
                         //lo que sea dinamico (al no tener un id estatico para referencia de titulo) se pasa al default del switch
-                        fragment = CustomGameFragment.newInstance(item.getTitle().toString().toLowerCase());
+                        fragment = CustomGameFragment.newInstance(item.getTitle().toString());
                         fragtransac = true;
                         break;
                 }
