@@ -17,13 +17,7 @@ public interface PlayersDAO {
     void insertPlayers(PlayersEntity... players);
 
     @Query("SELECT * FROM Players_Table WHERE game = :game")
-    LiveData<List<PlayersEntity>> getLolPlayers(String game);
-
-    @Query("SELECT * FROM Players_Table WHERE game = :game")
-    LiveData<List<PlayersEntity>> getOverwatchPlayers(String game);
-
-    @Query("SELECT * FROM Players_Table WHERE game = :game")
-    LiveData<List<PlayersEntity>> getCsgoPlayers(String game);
+    LiveData<List<PlayersEntity>> getCategorizedPlayers(String game);
 
     @Query("DELETE FROM Players_Table")
     void deleteAllPlayers();

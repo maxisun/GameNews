@@ -15,8 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.max00.gamenews.RoomArchitecture.Entity.CategoryEntity;
 import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository.fetchNews;
-import com.example.max00.gamenews.RoomArchitecture.Repository.CategoryRepository.CallCategories;
+import com.example.max00.gamenews.RoomArchitecture.Repository.CategoryRepository;
 import com.example.max00.gamenews.API.GameNewsAPI;
 import com.example.max00.gamenews.API.NewsDeserializer;
 import com.example.max00.gamenews.Classes.News;
@@ -74,11 +76,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 boolean fragtransac = false;
                 android.support.v4.app.Fragment fragment = null;
-
+                int i = 0;
                 switch (item.getItemId()){
                     case R.id.news_drawermenu_ID:
                         fragment = NewsFragment.newInstance(item.getTitle().toString());
-                        //fragment = NewsFragment.newInstance(list2);
                         fragtransac = true;
                         break;
                     case R.id.leaguelegends_drawermenu_ID:
@@ -98,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     default:
-
+                        //lo que sea dinamico (al no tener un id estatico para referencia de titulo) se pasa al default del switch
+                        fragment = CustomGameFragment.newInstance(item.getTitle().toString().toLowerCase());
+                        fragtransac = true;
                         break;
                 }
                 if(fragtransac){
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         playersViewModel = new PlayersViewModel(getApplication());
         fetchNews.setContext(getApplicationContext());
         categoryViewModel = new CategoryViewModel(getApplication());
-
+        categoryViewModel.getAllCategories().observe(this,this::addMenuItems);
     }
 
     //funcion para hacer que funcione el boton para mostrar el drawerlayout
@@ -129,30 +132,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*private void newslist(){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(GameNewsAPI.BASEURL).addConverterFactory(GsonConverterFactory.create(new Gson())).build();
-        GameNewsAPI gameNewsAPI = retrofit.create(GameNewsAPI.class);
-        Call<List<News>> news = gameNewsAPI.getNews("Beared " + token);
-        news.enqueue(new Callback<List<News>>() {
-            @Override
-            public void onResponse(Call<List<News>> call, Response<List<News>> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Cargando...",Toast.LENGTH_SHORT).show();
-                    list2 = (ArrayList<News>) response.body();
-                }else {
-                    Toast.makeText(getApplicationContext(),"No se pudo cargar las noticias",Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<News>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"cagado",Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),token,Toast.LENGTH_LONG).show();
-            }
-        });
-    }*/
     /*private void setFragmentByDefault(){
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main, newsFragment).commit();
         MenuItem item = navigationView.getMenu().getItem(0);
@@ -165,9 +144,18 @@ public class MainActivity extends AppCompatActivity {
         if(!sharedPreferences.contains("Token")){
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
-            finish();;
+            finish();
         }else {
             token = sharedPreferences.getString("Token","");
+        }
+    }
+
+    private void addMenuItems(List<CategoryEntity> categories) {
+        //se limpia para evitar algun conflicto
+        navigationView.getMenu().findItem(R.id.categories_games).getSubMenu().clear();
+        //recorremos la lista que estamos observando para setetearle las categorias el submenu que tenemos
+        for (CategoryEntity i : categories) {
+            navigationView.getMenu().findItem(R.id.categories_games).getSubMenu().add(i.getCategory()).setCheckable(false).setIcon(R.drawable.icono_bookmark);
         }
     }
 

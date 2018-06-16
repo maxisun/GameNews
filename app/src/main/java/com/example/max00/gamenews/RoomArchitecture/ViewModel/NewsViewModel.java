@@ -46,6 +46,10 @@ public class NewsViewModel extends AndroidViewModel{
         return categorizedcsgo;
     }
 
+    public LiveData<List<NewsEntity>> getCategorizedNews(String game){
+        return newsRepository.getCategorizedNews(game);
+    }
+
     public void insert(List<NewsEntity> newsEntity){
         newsRepository.insert(newsEntity);
     }

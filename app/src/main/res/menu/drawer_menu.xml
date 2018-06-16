@@ -38,5 +38,16 @@
         </menu>
     </item>
 
+        <item
+            android:id="@+id/categories_games"
+            android:title="@string/games">
+            <menu>
+                <group
+                    android:id="@+id/categories"
+                    android:checkableBehavior="single">
+                </group>
+            </menu>
+        </item>
+
     </group>
 </menu>

@@ -29,5 +29,5 @@ public interface GameNewsAPI {
     Call<List<PlayersEntity>> getPlayers(@Header("Authorization") String authorization);
 
     @GET("/news/type/list")
-    Call<List<String>> getCategories(@Header("Authotization") String authorization);
+    Call<List<String>> getCategories(@Header("Authorization") String authorization);
 }

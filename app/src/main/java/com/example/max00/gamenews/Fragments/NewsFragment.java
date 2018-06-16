@@ -242,4 +242,8 @@ public class NewsFragment extends Fragment {
             }
         });
     }
+
+    private void getCategorizedNews(){
+
+    }
 }

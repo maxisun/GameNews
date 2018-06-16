@@ -87,13 +87,18 @@ public class PlayersFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_players, container, false);
         recyclerView = v.findViewById(R.id.recycleview_playersfragment);
         swipeRefreshLayout = v.findViewById(R.id.Players_Refresh);
-        if(category.equals("lol")){
-            setLolplayers();
-        }else if (category.equals("overwatch")){
-            setOverwatchplayers();
-        }else if (category.equals("csgo")){
-            setCsgoplayers();
-        }
+
+        playersViewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
+        playersViewModel.getCategorizedPlayers(category).observe(this, new Observer<List<PlayersEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<PlayersEntity> playerEntities) {
+                adapter = new PlayersAdapter(playerEntities,getActivity());
+                linearLayoutManager = new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -145,44 +150,5 @@ public class PlayersFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    private void setLolplayers(){
-        playersViewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
-        playersViewModel.getLolplayers().observe(this, new Observer<List<PlayersEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<PlayersEntity> playerEntities) {
-                adapter = new PlayersAdapter(playerEntities,getActivity());
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    private void setOverwatchplayers(){
-        playersViewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
-        playersViewModel.getOverwatchplayers().observe(this, new Observer<List<PlayersEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<PlayersEntity> playerEntities) {
-                adapter = new PlayersAdapter(playerEntities,getActivity());
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-    }
-
-    private void setCsgoplayers(){
-        playersViewModel = ViewModelProviders.of(this).get(PlayersViewModel.class);
-        playersViewModel.getCsgoplayers().observe(this, new Observer<List<PlayersEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<PlayersEntity> playerEntities) {
-                adapter = new PlayersAdapter(playerEntities,getActivity());
-                linearLayoutManager = new LinearLayoutManager(getActivity());
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
-            }
-        });
     }
 }

@@ -12,7 +12,7 @@ public class CategoryEntity implements Serializable{
 
     @NonNull
     @PrimaryKey
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "category")
     private String category;
 
     public CategoryEntity() {

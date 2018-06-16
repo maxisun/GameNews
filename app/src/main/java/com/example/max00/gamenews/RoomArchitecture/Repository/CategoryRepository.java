@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import com.example.max00.gamenews.API.CategoryDeserializer;
 import com.example.max00.gamenews.API.GameNewsAPI;
 import com.example.max00.gamenews.RoomArchitecture.DAO.CategoryDAO;
 import com.example.max00.gamenews.RoomArchitecture.DAO.NewsDAO;
@@ -13,8 +14,12 @@ import com.example.max00.gamenews.RoomArchitecture.Entity.CategoryEntity;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.GameNewsDatabase;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,13 +46,14 @@ public class CategoryRepository {
         return categoryDAO.getAllCategories();
     }
 
-    public void insert(CategoryEntity categoryEntity){
-        new insertAsyncTask(categoryDAO).execute((List<CategoryEntity>) categoryEntity);
-    }
+    /*public void insert(CategoryEntity categoryEntity){
+        new insertAsyncTask(categoryDAO).execute(categoryEntity);
+    }*/
 
     public void fetchCategories() {
         new CallCategories(token,categoryDAO).execute();
     }
+
 
     private static class insertAsyncTask extends AsyncTask<List<CategoryEntity>, Void, Void> {
 
@@ -69,6 +75,7 @@ public class CategoryRepository {
         }
     }
 
+
     public static class CallCategories extends AsyncTask<Void, Void, Void>{
 
         private CategoryDAO categoryDAO;
@@ -88,14 +95,14 @@ public class CategoryRepository {
                 @Override
                 public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                     if(response.isSuccessful()){
-                        System.out.println("FUNCIONA CABRONNNNSADFFFFFFFFFFFFFFFFFFFFF");
-                        ArrayList<CategoryEntity> categoryEntities = new ArrayList();
-                        CategoryEntity categoryEntity = new CategoryEntity();
-                        for(String i:response.body()){
-                            categoryEntity.setCategory(i);
+                        ArrayList<String> list = (ArrayList<String>) response.body();
+                        List<CategoryEntity> categoryEntities = new ArrayList<>();
+                        for(int i=0; i<list.size(); i++){
+                            CategoryEntity categoryEntity = new CategoryEntity();
+                            categoryEntity.setCategory(list.get(i));
                             categoryEntities.add(categoryEntity);
                         }
-                        new CategoryRepository.insertAsyncTask(categoryDAO).execute(categoryEntities);
+                        new insertAsyncTask(categoryDAO).execute(categoryEntities);
                     }else{
                         System.out.println("TOSTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOsADFWQR#RWQRFSF");
                     }
@@ -107,4 +114,5 @@ public class CategoryRepository {
             return null;
         }
     }
+
 }

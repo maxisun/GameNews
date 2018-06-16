@@ -62,6 +62,10 @@ public class NewsRepository {
         return categorizedcsgo;
     }
 
+    public LiveData<List<NewsEntity>> getCategorizedNews(String game){
+        return newsDAO.getCategorizedNews(game);
+    }
+
     public void insert(List<NewsEntity> news) {
         new insertAsyncTask(newsDAO).execute(news);
     }
