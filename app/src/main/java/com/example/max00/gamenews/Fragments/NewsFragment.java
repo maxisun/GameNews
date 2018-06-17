@@ -24,6 +24,7 @@ import com.example.max00.gamenews.Adapters.NewsAdapter;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Repository.NewsRepository;
+import com.example.max00.gamenews.RoomArchitecture.ViewModel.CategoryViewModel;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class NewsFragment extends Fragment {
     private NewsViewModel newsViewModel;
     private GridLayoutManager gridLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private CategoryViewModel categoryViewModel;
     private SearchView searchView;
 
 
@@ -108,6 +110,7 @@ public class NewsFragment extends Fragment {
                     @Override public void run() {
                         try {
                             newsViewModel = new NewsViewModel(getActivity().getApplication());
+                            categoryViewModel = new CategoryViewModel(getActivity().getApplication());
                             swipeRefreshLayout.setRefreshing(false);
                         }catch (Exception e){
                         }

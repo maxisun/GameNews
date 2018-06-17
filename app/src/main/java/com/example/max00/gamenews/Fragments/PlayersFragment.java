@@ -22,6 +22,7 @@ import com.example.max00.gamenews.Adapters.PlayersAdapter;
 import com.example.max00.gamenews.R;
 import com.example.max00.gamenews.RoomArchitecture.Entity.NewsEntity;
 import com.example.max00.gamenews.RoomArchitecture.Entity.PlayersEntity;
+import com.example.max00.gamenews.RoomArchitecture.ViewModel.CategoryViewModel;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.NewsViewModel;
 import com.example.max00.gamenews.RoomArchitecture.ViewModel.PlayersViewModel;
 
@@ -46,6 +47,7 @@ public class PlayersFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private PlayersViewModel playersViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private CategoryViewModel categoryViewModel;
     // TODO: Rename and change types of parameters
     private String category;
     private String mParam2;
@@ -107,6 +109,7 @@ public class PlayersFragment extends Fragment {
                     @Override public void run() {
                         try {
                             playersViewModel = new PlayersViewModel(getActivity().getApplication());
+                            categoryViewModel = new CategoryViewModel(getActivity().getApplication());
                             swipeRefreshLayout.setRefreshing(false);
                         }catch (Exception e){
                         }
